@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Treasury Report 2025–26 · Rotaract Club of Ambattur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* ── Palette: Midnight Navy × Electric Amber × Blush Chalk ── */
+    --navy:        #0D1B2A;
+    --navy-2:      #1A2D42;
+    --navy-3:      #243B55;
+    --amber:       #F4A418;
+    --amber-deep:  #C8820A;
+    --amber-pale:  #FEF5E2;
+    --rose:        #E8455A;
+    --rose-pale:   #FDEEF0;
+    --sage:        #2EC4B6;
+    --sage-pale:   #E4F8F7;
+    --chalk:       #F8F5F0;
+    --white:       #FFFFFF;
+    --ink:         #0D1B2A;
+    --ink-2:       #2A3D52;
+    --muted:       #6B7E92;
+    --border:      #DDE3EA;
+    --serif:       'Playfair Display', Georgia, serif;
+    --sans:        'DM Sans', system-ui, sans-serif;
+    --mono:        'JetBrains Mono', monospace;
+    --radius:      12px;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--chalk);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HERO ─────────────────────────────────────────────────────────── */
+  .hero {
+    background: var(--navy);
+    color: var(--white);
+    padding: 4.5rem 2rem 3.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 15% 80%, rgba(244,164,24,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 85% 20%, rgba(46,196,182,0.08) 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--sage) 0%, var(--amber) 50%, var(--rose) 100%);
+  }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 400;
+    line-height: 1.12;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+    color: #FEFDF9;
+  }
+  .hero h1 em { color: var(--amber); font-style: italic; }
+  .hero-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.03em;
+  }
+  .hero-kpi {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius);
+    overflow: hidden;
+    max-width: 660px;
+    margin: 0 auto;
+  }
+  .kpi-cell {
+    flex: 1;
+    min-width: 130px;
+    padding: 1.3rem 1rem;
+    background: rgba(13,27,42,0.55);
+    text-align: center;
+  }
+  .kpi-cell + .kpi-cell { border-left: 1px solid rgba(255,255,255,0.07); }
+  .kpi-label { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 7px; }
+  .kpi-value { font-family: var(--serif); font-size: 1.55rem; font-weight: 400; color: #FEFDF9; }
+  .kpi-value.pos { color: var(--amber); }
+  .kpi-value.neg { color: #f4788a; }
+
+  /* ── LAYOUT ───────────────────────────────────────────────────────── */
+  .container { max-width: 1000px; margin: 0 auto; padding: 0 1.5rem; }
+  .section { padding: 3rem 0; border-bottom: 1px solid var(--border); }
+  .section:last-child { border-bottom: none; }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .section-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--amber-deep);
+    white-space: nowrap;
+    background: var(--amber-pale);
+    padding: 3px 9px;
+    border-radius: 4px;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: 1.55rem;
+    font-weight: 400;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+  .section-rule {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── SUMMARY GRID ────────────────────────────────────────────────── */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+  .summary-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.25rem;
+    border-top: 3px solid var(--border);
+  }
+  .summary-card.accent {
+    border-color: var(--amber);
+    border-top: 3px solid var(--amber);
+    background: var(--amber-pale);
+  }
+  .summary-card .s-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 6px; }
+  .summary-card .s-value { font-family: var(--serif); font-size: 1.6rem; font-weight: 400; color: var(--navy); }
+  .summary-card.accent .s-value { color: var(--amber-deep); }
+  .summary-card .s-note { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  /* ── CHARTS ──────────────────────────────────────────────────────── */
+  .chart-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  @media (max-width: 640px) { .chart-row { grid-template-columns: 1fr; } }
+  .chart-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+  }
+  .chart-card h3 { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 1rem; letter-spacing: -0.01em; }
+  .chart-wrap { position: relative; width: 100%; }
+  .chart-wrap.h260 { height: 260px; }
+  .chart-wrap.h200 { height: 200px; }
+  .legend-row {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    font-size: 11px; color: var(--muted); margin-top: 10px;
+  }
+  .legend-row span { display: flex; align-items: center; gap: 5px; }
+  .leg-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+  /* ── TABS ────────────────────────────────────────────────────────── */
+  .tab-nav {
+    display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem;
+  }
+  .tab-btn {
+    padding: 6px 18px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    font-size: 12px;
+    font-family: var(--sans);
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .tab-btn:hover { border-color: var(--amber); color: var(--amber-deep); }
+  .tab-btn.active { background: var(--navy); border-color: var(--navy); color: var(--amber); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── TABLES ──────────────────────────────────────────────────────── */
+  .tbl-wrap { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  thead th {
+    background: var(--navy-2);
+    color: rgba(255,255,255,0.65);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    padding: 10px 12px;
+    text-align: left;
+    white-space: nowrap;
+  }
+  thead th:first-child { border-radius: 0; }
+  thead th.num { text-align: right; }
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #F4F7FA; }
+  tbody td {
+    padding: 9px 12px;
+    color: var(--ink-2);
+    vertical-align: middle;
+  }
+  tbody td.num { text-align: right; font-family: var(--mono); font-size: 12px; }
+  tbody td.pos { color: #0A7A6E; font-weight: 600; }
+  tbody td.neg { color: var(--rose); }
+  tbody td.zero { color: var(--muted); }
+  tbody td.date-col { color: var(--muted); font-size: 12px; white-space: nowrap; }
+  tfoot td {
+    padding: 10px 12px;
+    font-weight: 600;
+    font-size: 13px;
+    background: #EEF2F7;
+    border-top: 2px solid #C5D0DC;
+    color: var(--navy);
+  }
+  tfoot td.num { text-align: right; font-family: var(--mono); }
+  tfoot td.pos { color: #0A7A6E; }
+  tfoot td.neg { color: var(--rose); }
+
+  /* ── FUND SOURCES ────────────────────────────────────────────────── */
+  .funds-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .fund-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.1rem;
+  }
+  .fund-card.highlight {
+    border-color: var(--amber);
+    background: var(--navy);
+  }
+  .fund-card-title {
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--muted); margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  }
+  .fund-card.highlight .fund-card-title {
+    color: var(--amber);
+    border-color: rgba(244,164,24,0.25);
+  }
+  .fund-row {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12.5px; padding: 5px 0;
+    border-bottom: 1px solid var(--chalk);
+    color: var(--ink-2);
+  }
+  .fund-card.highlight .fund-row { color: rgba(255,255,255,0.75); border-color: rgba(255,255,255,0.07); }
+  .fund-row:last-child { border-bottom: none; }
+  .fund-row .amt { font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--ink); }
+  .fund-card.highlight .amt { color: var(--amber); font-size: 22px; }
+  .fund-total-label { font-weight: 600; font-size: 13px; color: rgba(255,255,255,0.9); }
+
+  /* ── CLOSING ─────────────────────────────────────────────────────── */
+  .closing-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    max-width: 500px;
+  }
+  .closing-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 16px; font-size: 13.5px;
+    border-bottom: 1px solid var(--border);
+    color: var(--ink-2);
+  }
+  .closing-row:last-child {
+    border-bottom: none;
+    font-weight: 600;
+    font-size: 15px;
+    background: var(--navy);
+    color: var(--white);
+    padding: 16px;
+  }
+  .closing-row .c-val { font-family: var(--mono); font-size: 13px; }
+  .closing-row:last-child .c-val { font-size: 20px; color: var(--amber); }
+
+  /* ── NOTE ────────────────────────────────────────────────────────── */
+  .note-box {
+    background: #FFFBF0;
+    border-left: 3px solid var(--amber);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 1rem 1.25rem;
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.65;
+    margin-top: 1.5rem;
+  }
+  .note-box strong { color: var(--amber-deep); }
+
+  /* ── BADGE ───────────────────────────────────────────────────────── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge.pos { background: var(--sage-pale); color: #0A7A6E; }
+  .badge.neg { background: var(--rose-pale); color: var(--rose); }
+  .badge.zero { background: var(--amber-pale); color: var(--amber-deep); }
+
+  /* ── FOOTER ──────────────────────────────────────────────────────── */
+  footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    border-top: 3px solid var(--amber);
+  }
+  footer strong { color: var(--amber); }
+
+  /* ── RESPONSIVE ──────────────────────────────────────────────────── */
+  @media (max-width: 600px) {
+    .hero { padding: 2.5rem 1.25rem 2rem; }
+    .kpi-cell { min-width: 100px; }
+    .section { padding: 2rem 0; }
+    .funds-grid { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    .hero { background: var(--navy) !important; -webkit-print-color-adjust: exact; }
+    .tab-panel { display: block !important; }
+    .tab-nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ───────────────────────────────────────────────────────────── -->
+<header class="hero">
+  <p class="hero-eyebrow">Rotaract Club of Ambattur · RID 3234</p>
+  <h1>Full-Year Treasury Report<br><em>2025 – 2026</em></h1>
+  <p class="hero-sub">July 2025 – June 2026 &nbsp;·&nbsp; Compiled by the Club Treasury</p>
+  <div class="hero-kpi">
+    <div class="kpi-cell">
+      <div class="kpi-label">Total Income</div>
+      <div class="kpi-value">₹21,81,085</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">Total Expense</div>
+      <div class="kpi-value">₹20,94,252</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">Net Balance</div>
+      <div class="kpi-value pos">₹86,833</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">Events</div>
+      <div class="kpi-value">37</div>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- ── OVERVIEW ──────────────────────────────────────────────────────── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-eyebrow">01</span>
+      <h2 class="section-title">Financial overview</h2>
+      <div class="section-rule"></div>
+    </div>
+
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="s-label">Club events net</div>
+        <div class="s-value">+₹52,470</div>
+        <div class="s-note">30 events conducted</div>
+      </div>
+      <div class="summary-card" style="border-top-color:#E8455A; background:#fdf0f2">
+        <div class="s-label">District events net</div>
+        <div class="s-value" style="color:var(--rose)">−₹42,050</div>
+        <div class="s-note">7 district participations</div>
+      </div>
+      <div class="summary-card" style="border-top-color:#E8455A; background:#fdf0f2">
+        <div class="s-label">Admin expenses net</div>
+        <div class="s-value" style="color:var(--rose)">−₹1,69,506</div>
+        <div class="s-note">RI dues, DRR visit, ops</div>
+      </div>
+      <div class="summary-card accent">
+        <div class="s-label">Closing balance</div>
+        <div class="s-value">₹86,833</div>
+        <div class="s-note">Club + Vidiyal balances</div>
+      </div>
+    </div>
+
+    <div class="chart-row">
+      <div class="chart-card">
+        <h3>Income vs expense by category</h3>
+        <div class="chart-wrap h260">
+          <canvas id="catChart" role="img" aria-label="Grouped bar chart comparing income and expense across Club Events, District Events, and Admin."></canvas>
+        </div>
+        <div class="legend-row">
+          <span><span class="leg-dot" style="background:#2EC4B6"></span>Income</span>
+          <span><span class="leg-dot" style="background:#E8455A"></span>Expense</span>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>Top 3 surplus-generating events</h3>
+        <div class="chart-wrap h260">
+          <canvas id="topChart" role="img" aria-label="Horizontal bar chart of top surplus events: Vidiyal, Nakshatra, HUG 5.0"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-row">
+      <div class="chart-card" style="grid-column: 1 / -1;">
+        <h3>Club events — net surplus/deficit per event</h3>
+        <div class="chart-wrap h260">
+          <canvas id="eventNet" role="img" aria-label="Bar chart showing net surplus or deficit for each club event"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CLUB EVENTS ──────────────────────────────────────────────────── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-eyebrow">02</span>
+      <h2 class="section-title">Club events</h2>
+      <div class="section-rule"></div>
+    </div>
+
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab(this,'club-all')">All events</button>
+      <button class="tab-btn" onclick="switchTab(this,'club-surplus')">Surplus</button>
+      <button class="tab-btn" onclick="switchTab(this,'club-deficit')">Deficit</button>
+    </div>
+
+    <!-- ALL -->
+    <div id="club-all" class="tab-panel active">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Event name</th><th>Date</th><th class="num">Income (₹)</th><th class="num">Expense (₹)</th><th class="num">Net (₹)</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Off Season-1</td><td class="date-col">25/05/2025</td><td class="num">—</td><td class="num">315</td><td class="num neg">−315</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>2</td><td>Installation (Dawn &amp; Ambattur Vagayara)</td><td class="date-col">06/07/2025</td><td class="num">1,73,837</td><td class="num">1,97,190</td><td class="num neg">−23,353</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>3</td><td>Orientation – Adipadai</td><td class="date-col">13/07/2025</td><td class="num">—</td><td class="num">1,754</td><td class="num neg">−1,754</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>4</td><td>Zoo-Ming with Fambattur</td><td class="date-col">19/07/2025</td><td class="num">6,200</td><td class="num">6,200</td><td class="num zero">0</td><td><span class="badge zero">Break-even</span></td></tr>
+            <tr><td>5</td><td>BOLS – Ini Oru Vidhi Seivom</td><td class="date-col">25/07/2025</td><td class="num">3,800</td><td class="num">4,330</td><td class="num neg">−530</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>6</td><td>Serve the Dead – Phase 1</td><td class="date-col">02/08/2025</td><td class="num">500</td><td class="num">500</td><td class="num zero">0</td><td><span class="badge zero">Break-even</span></td></tr>
+            <tr><td>7</td><td>Beyond Baichara</td><td class="date-col">09/08/2025</td><td class="num">—</td><td class="num">1,020</td><td class="num neg">−1,020</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>8</td><td>Share Fare</td><td class="date-col">30/08/2025</td><td class="num">—</td><td class="num">500</td><td class="num neg">−500</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>9</td><td>Nakshatra'17</td><td class="date-col">07/09/2025</td><td class="num">2,96,700</td><td class="num">2,81,465</td><td class="num pos">+15,235</td><td><span class="badge pos">Surplus</span></td></tr>
+            <tr><td>10</td><td>MudaliarKuppam Porom</td><td class="date-col">20/09/2025</td><td class="num">15,120</td><td class="num">25,120</td><td class="num neg">−10,000</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>11</td><td>Serve the Dead – Phase 2</td><td class="date-col">27/09/2025</td><td class="num">500</td><td class="num">500</td><td class="num zero">0</td><td><span class="badge zero">Break-even</span></td></tr>
+            <tr><td>12</td><td>Bowl and Bond</td><td class="date-col">28/09/2025</td><td class="num">1,100</td><td class="num">1,100</td><td class="num zero">0</td><td><span class="badge zero">Break-even</span></td></tr>
+            <tr><td>13</td><td>Lereve – Phase 1</td><td class="date-col">01/10/2025</td><td class="num">—</td><td class="num">1,000</td><td class="num neg">−1,000</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>14</td><td>HUG 5.0</td><td class="date-col">11–12/10/2025</td><td class="num">2,64,400</td><td class="num">2,59,079</td><td class="num pos">+5,321</td><td><span class="badge pos">Surplus</span></td></tr>
+            <tr><td>15</td><td>Master Chef Mini</td><td class="date-col">18/10/2025</td><td class="num">1,500</td><td class="num">4,050</td><td class="num neg">−2,550</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>16</td><td>Lephare</td><td class="date-col">25/10/2025</td><td class="num">—</td><td class="num">260</td><td class="num neg">−260</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>17</td><td>Lereve – Phase 2</td><td class="date-col">01/11/2025</td><td class="num">—</td><td class="num">609</td><td class="num neg">−609</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>18</td><td>Spooktacular Night</td><td class="date-col">01/11/2025</td><td class="num">37,613</td><td class="num">56,919</td><td class="num neg">−19,306</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>19</td><td>Lereve – Phase 3</td><td class="date-col">08/11/2025</td><td class="num">12,500</td><td class="num">—</td><td class="num pos">+12,500</td><td><span class="badge pos">Surplus</span></td></tr>
+            <tr><td>20</td><td>Children's Day – Melody of Childhood</td><td class="date-col">15/11/2025</td><td class="num">—</td><td class="num">2,108</td><td class="num neg">−2,108</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>21</td><td>Happy Haul – Donation Drive</td><td class="date-col">18/11/2025</td><td class="num">8,698</td><td class="num">8,698</td><td class="num zero">0</td><td><span class="badge zero">Break-even</span></td></tr>
+            <tr><td>22</td><td>Fambattur Ganna</td><td class="date-col">06/12/2025</td><td class="num">—</td><td class="num">2,000</td><td class="num neg">−2,000</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>23</td><td>One Wish</td><td class="date-col">31/12/2025</td><td class="num">—</td><td class="num">1,345</td><td class="num neg">−1,345</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>24</td><td>Magic Moments</td><td class="date-col">10/01/2026</td><td class="num">1,484</td><td class="num">5,268</td><td class="num neg">−3,784</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>25</td><td>Vidiyal</td><td class="date-col">14/02/2026</td><td class="num">9,44,000</td><td class="num">8,28,305</td><td class="num pos">+1,15,695</td><td><span class="badge pos">Surplus</span></td></tr>
+            <tr><td>26</td><td>Icon – Interact RYLA</td><td class="date-col">28/02/2026</td><td class="num">28,664</td><td class="num">31,563</td><td class="num neg">−2,899</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>27</td><td>Blast</td><td class="date-col">01/03/2026</td><td class="num">—</td><td class="num">12,073</td><td class="num neg">−12,073</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>28</td><td>Inclusion – Dental Camp</td><td class="date-col">10/03/2026</td><td class="num">—</td><td class="num">875</td><td class="num neg">−875</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>29</td><td>With Love</td><td class="date-col">29/03/2026</td><td class="num">—</td><td class="num">7,000</td><td class="num neg">−7,000</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>30</td><td>Gift Exchange – ISD</td><td class="date-col">—</td><td class="num">—</td><td class="num">3,000</td><td class="num neg">−3,000</td><td><span class="badge neg">Deficit</span></td></tr>
+          </tbody>
+          <tfoot><tr><td colspan="3">Total</td><td class="num">17,96,616</td><td class="num">17,44,146</td><td class="num pos">+52,470</td><td></td></tr></tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- SURPLUS -->
+    <div id="club-surplus" class="tab-panel">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Event name</th><th>Date</th><th class="num">Income (₹)</th><th class="num">Expense (₹)</th><th class="num">Surplus (₹)</th></tr></thead>
+          <tbody>
+            <tr><td>Vidiyal</td><td class="date-col">14/02/2026</td><td class="num">9,44,000</td><td class="num">8,28,305</td><td class="num pos">+1,15,695</td></tr>
+            <tr><td>Nakshatra'17</td><td class="date-col">07/09/2025</td><td class="num">2,96,700</td><td class="num">2,81,465</td><td class="num pos">+15,235</td></tr>
+            <tr><td>Lereve – Phase 3</td><td class="date-col">08/11/2025</td><td class="num">12,500</td><td class="num">—</td><td class="num pos">+12,500</td></tr>
+            <tr><td>HUG 5.0</td><td class="date-col">11–12/10/2025</td><td class="num">2,64,400</td><td class="num">2,59,079</td><td class="num pos">+5,321</td></tr>
+          </tbody>
+          <tfoot><tr><td colspan="4">Total surplus</td><td class="num pos">+1,48,751</td></tr></tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- DEFICIT -->
+    <div id="club-deficit" class="tab-panel">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Event name</th><th>Date</th><th class="num">Income (₹)</th><th class="num">Expense (₹)</th><th class="num">Deficit (₹)</th></tr></thead>
+          <tbody>
+            <tr><td>Installation (Dawn &amp; Ambattur Vagayara)</td><td class="date-col">06/07/2025</td><td class="num">1,73,837</td><td class="num">1,97,190</td><td class="num neg">−23,353</td></tr>
+            <tr><td>Spooktacular Night</td><td class="date-col">01/11/2025</td><td class="num">37,613</td><td class="num">56,919</td><td class="num neg">−19,306</td></tr>
+            <tr><td>MudaliarKuppam Porom</td><td class="date-col">20/09/2025</td><td class="num">15,120</td><td class="num">25,120</td><td class="num neg">−10,000</td></tr>
+            <tr><td>Blast</td><td class="date-col">01/03/2026</td><td class="num">—</td><td class="num">12,073</td><td class="num neg">−12,073</td></tr>
+            <tr><td>With Love</td><td class="date-col">29/03/2026</td><td class="num">—</td><td class="num">7,000</td><td class="num neg">−7,000</td></tr>
+            <tr><td>Magic Moments</td><td class="date-col">10/01/2026</td><td class="num">1,484</td><td class="num">5,268</td><td class="num neg">−3,784</td></tr>
+            <tr><td>Gift Exchange – ISD</td><td class="date-col">—</td><td class="num">—</td><td class="num">3,000</td><td class="num neg">−3,000</td></tr>
+            <tr><td>Icon – Interact RYLA</td><td class="date-col">28/02/2026</td><td class="num">28,664</td><td class="num">31,563</td><td class="num neg">−2,899</td></tr>
+            <tr><td>Master Chef Mini</td><td class="date-col">18/10/2025</td><td class="num">1,500</td><td class="num">4,050</td><td class="num neg">−2,550</td></tr>
+            <tr><td>Fambattur Ganna</td><td class="date-col">06/12/2025</td><td class="num">—</td><td class="num">2,000</td><td class="num neg">−2,000</td></tr>
+            <tr><td>Children's Day – Melody of Childhood</td><td class="date-col">15/11/2025</td><td class="num">—</td><td class="num">2,108</td><td class="num neg">−2,108</td></tr>
+            <tr><td>Orientation – Adipadai</td><td class="date-col">13/07/2025</td><td class="num">—</td><td class="num">1,754</td><td class="num neg">−1,754</td></tr>
+            <tr><td>One Wish</td><td class="date-col">31/12/2025</td><td class="num">—</td><td class="num">1,345</td><td class="num neg">−1,345</td></tr>
+            <tr><td>Beyond Baichara</td><td class="date-col">09/08/2025</td><td class="num">—</td><td class="num">1,020</td><td class="num neg">−1,020</td></tr>
+            <tr><td>Lereve – Phase 1 &amp; 2</td><td class="date-col">Oct–Nov 2025</td><td class="num">—</td><td class="num">1,609</td><td class="num neg">−1,609</td></tr>
+            <tr><td>BOLS – Ini Oru Vidhi Seivom</td><td class="date-col">25/07/2025</td><td class="num">3,800</td><td class="num">4,330</td><td class="num neg">−530</td></tr>
+            <tr><td>Share Fare</td><td class="date-col">30/08/2025</td><td class="num">—</td><td class="num">500</td><td class="num neg">−500</td></tr>
+            <tr><td>Inclusion – Dental Camp</td><td class="date-col">10/03/2026</td><td class="num">—</td><td class="num">875</td><td class="num neg">−875</td></tr>
+            <tr><td>Lephare</td><td class="date-col">25/10/2025</td><td class="num">—</td><td class="num">260</td><td class="num neg">−260</td></tr>
+            <tr><td>Off Season-1</td><td class="date-col">25/05/2025</td><td class="num">—</td><td class="num">315</td><td class="num neg">−315</td></tr>
+          </tbody>
+          <tfoot><tr><td colspan="4">Total deficit</td><td class="num neg">−96,281</td></tr></tfoot>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── DISTRICT EVENTS ──────────────────────────────────────────────── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-eyebrow">03</span>
+      <h2 class="section-title">District events</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Event name</th><th>Date</th><th class="num">Income (₹)</th><th class="num">Expense (₹)</th><th class="num">Net (₹)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>District Assembly – RISE</td><td class="date-col">17/08/2025</td><td class="num">9,250</td><td class="num">9,250</td><td class="num zero">0</td></tr>
+          <tr><td>2</td><td>Lead'25 Conclave</td><td class="date-col">24/08/2025</td><td class="num">10,000</td><td class="num">10,000</td><td class="num zero">0</td></tr>
+          <tr><td>3</td><td>Dandiya Night</td><td class="date-col">27/09/2025</td><td class="num">14,000</td><td class="num">14,000</td><td class="num zero">0</td></tr>
+          <tr><td>4</td><td>GRM</td><td class="date-col">21/12/2025</td><td class="num">1,00,000</td><td class="num">1,19,050</td><td class="num neg">−19,050</td></tr>
+          <tr><td>5</td><td>ARC Conference</td><td class="date-col">15/02/2026</td><td class="num">—</td><td class="num">5,000</td><td class="num neg">−5,000</td></tr>
+          <tr><td>6</td><td>District Dues</td><td class="date-col">30/11/2025</td><td class="num">—</td><td class="num">3,000</td><td class="num neg">−3,000</td></tr>
+          <tr><td>7</td><td>Pels &amp; Sels</td><td class="date-col">21/06/2026</td><td class="num">—</td><td class="num">15,000</td><td class="num neg">−15,000</td></tr>
+        </tbody>
+        <tfoot><tr><td colspan="3">Total</td><td class="num">1,33,250</td><td class="num">1,75,300</td><td class="num neg">−42,050</td></tr></tfoot>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── ADMIN ─────────────────────────────────────────────────────────── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-eyebrow">04</span>
+      <h2 class="section-title">Administrative expenses</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Item</th><th>Date</th><th class="num">Income (₹)</th><th class="num">Expense (₹)</th><th class="num">Net (₹)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>District Directory AD</td><td class="date-col">24/06/2025</td><td class="num">5,000</td><td class="num">15,000</td><td class="num neg">−10,000</td></tr>
+          <tr><td>2</td><td>Prints</td><td class="date-col">—</td><td class="num">—</td><td class="num">880</td><td class="num neg">−880</td></tr>
+          <tr><td>3</td><td>Club Signage Board</td><td class="date-col">07/08/2025</td><td class="num">—</td><td class="num">3,110</td><td class="num neg">−3,110</td></tr>
+          <tr><td>4</td><td>GRR Bidding Amount</td><td class="date-col">06/12/2025</td><td class="num">—</td><td class="num">750</td><td class="num neg">−750</td></tr>
+          <tr><td>5</td><td>GRR Group Project</td><td class="date-col">14/12/2025</td><td class="num">—</td><td class="num">700</td><td class="num neg">−700</td></tr>
+          <tr><td>6</td><td>Collared Meeting – 3</td><td class="date-col">28/09/2025</td><td class="num">—</td><td class="num">2,000</td><td class="num neg">−2,000</td></tr>
+          <tr><td>7</td><td>Collared Meeting – 4</td><td class="date-col">22/11/2025</td><td class="num">—</td><td class="num">600</td><td class="num neg">−600</td></tr>
+          <tr><td>8</td><td>Collared Meeting – 5</td><td class="date-col">13/12/2025</td><td class="num">—</td><td class="num">1,180</td><td class="num neg">−1,180</td></tr>
+          <tr><td>9</td><td>Collared Meeting – 7</td><td class="date-col">22/02/2026</td><td class="num">—</td><td class="num">1,410</td><td class="num neg">−1,410</td></tr>
+          <tr><td>10</td><td>RI Due</td><td class="date-col">20/03/2026</td><td class="num">—</td><td class="num">50,131</td><td class="num neg">−50,131</td></tr>
+          <tr><td>11</td><td>ORG Domain</td><td class="date-col">31/05/2026</td><td class="num">—</td><td class="num">845</td><td class="num neg">−845</td></tr>
+          <tr><td>12</td><td>DRR Visit</td><td class="date-col">06/06/2026</td><td class="num">—</td><td class="num">92,900</td><td class="num neg">−92,900</td></tr>
+          <tr><td>13</td><td>Golden Dusk Awards – Noushed Ali</td><td class="date-col">27/06/2026</td><td class="num">—</td><td class="num">5,000</td><td class="num neg">−5,000</td></tr>
+        </tbody>
+        <tfoot><tr><td colspan="3">Total</td><td class="num">5,000</td><td class="num">1,74,506</td><td class="num neg">−1,69,506</td></tr></tfoot>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── FUND SOURCES ──────────────────────────────────────────────────── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-eyebrow">05</span>
+      <h2 class="section-title">Treasury fund sources</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="funds-grid">
+      <div class="fund-card">
+        <div class="fund-card-title">Opening &amp; fixed</div>
+        <div class="fund-row"><span>Minimum balance</span><span class="amt">₹5,500</span></div>
+        <div class="fund-row"><span>24–25 year closing balance</span><span class="amt">₹10,000</span></div>
+        <div class="fund-row"><span>Subscription fee (39 members)</span><span class="amt">₹81,580</span></div>
+      </div>
+      <div class="fund-card">
+        <div class="fund-card-title">Sponsorships &amp; contributions</div>
+        <div class="fund-row"><span>Voluntary contributions (5 sponsors)</span><span class="amt">₹13,000</span></div>
+        <div class="fund-row"><span>Parent club contribution</span><span class="amt">₹30,000</span></div>
+        <div class="fund-row"><span>Chakra Hospital sponsorship</span><span class="amt">₹2,00,000</span></div>
+        <div class="fund-row"><span>Gift</span><span class="amt">₹5,000</span></div>
+      </div>
+      <div class="fund-card">
+        <div class="fund-card-title">Event surpluses to treasury</div>
+        <div class="fund-row"><span>Nakshatra'17</span><span class="amt">₹19,000</span></div>
+        <div class="fund-row"><span>HUG 5.0</span><span class="amt">₹30,000</span></div>
+        <div class="fund-row"><span>Lereve</span><span class="amt">₹12,500</span></div>
+        <div class="fund-row"><span>Vidiyal</span><span class="amt">₹1,15,695</span></div>
+      </div>
+      <div class="fund-card highlight">
+        <div class="fund-card-title">Total additional income</div>
+        <div class="fund-row">
+          <span class="fund-total-label">Grand total</span>
+          <span class="amt">₹5,22,275</span>
+        </div>
+      </div>
+    </div>
+    <div class="note-box">
+      <strong>Note:</strong> This section captures funds received directly into the club treasury — opening balances, membership subscriptions, sponsorships, and post-event surpluses from Nakshatra, HUG, Lereve, and Vidiyal. These are separate from the event-level income shown in the Club Events table and must not be double-counted in the total.
+    </div>
+  </section>
+
+  <!-- ── CLOSING ──────────────────────────────────────────────────────── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-eyebrow">06</span>
+      <h2 class="section-title">Closing fund distribution</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="closing-card">
+      <div class="closing-row"><span>Club events net</span><span class="c-val" style="color:#0A9E90">+₹1,23,886</span></div>
+      <div class="closing-row"><span>District events net</span><span class="c-val" style="color:var(--rose)">−₹1,42,050</span></div>
+      <div class="closing-row"><span>Administrative expenses net</span><span class="c-val" style="color:var(--rose)">−₹1,44,505</span></div>
+      <div class="closing-row" style="background:#EEF2F7; font-weight:500"><span>Utilization total</span><span class="c-val" style="color:var(--rose)">−₹4,10,441</span></div>
+      <div class="closing-row"><span>Club balance carried forward</span><span class="c-val" style="color:var(--rose)">−₹28,862</span></div>
+      <div class="closing-row"><span>Vidiyal event balance</span><span class="c-val" style="color:#0A9E90">+₹1,15,695</span></div>
+      <div class="closing-row"><span>Closing treasury balance</span><span class="c-val" style="color:var(--amber); font-size:18px">₹86,833</span></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <strong>Rotaract Club of Ambattur</strong> &nbsp;·&nbsp; RID 3234 &nbsp;·&nbsp; Club Year 2025–2026<br />
+  <span style="margin-top:6px; display:inline-block">Treasury Report — For internal circulation</span>
+</footer>
+
+<script>
+function switchTab(btn, id) {
+  btn.closest('.section').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.closest('.section').querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
+const TEAL    = '#2EC4B6';
+const RED     = '#E8455A';
+const GOLD    = '#F4A418';
+const PURPLE  = '#7C5CBF';
+const INK     = '#1A2D42';
+const GRID    = '#DDE3EA';
+const MUTED   = '#6B7E92';
+
+/* Category bar chart */
+new Chart(document.getElementById('catChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Club Events', 'District Events', 'Admin'],
+    datasets: [
+      { label: 'Income', data: [1796616, 133250, 5000], backgroundColor: TEAL, borderRadius: 4, barPercentage: 0.6 },
+      { label: 'Expense', data: [1744146, 175300, 174506], backgroundColor: RED, borderRadius: 4, barPercentage: 0.6 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ' ₹' + c.raw.toLocaleString('en-IN') } } },
+    scales: {
+      x: { grid: { color: GRID }, ticks: { color: MUTED, font: { size: 11 } } },
+      y: { grid: { color: GRID }, ticks: { color: MUTED, font: { size: 11 },
+        callback: v => '₹' + (v >= 100000 ? (v/100000).toFixed(1) + 'L' : (v/1000).toFixed(0) + 'K') } }
+    }
+  }
+});
+
+/* Top events horizontal */
+new Chart(document.getElementById('topChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Vidiyal', "Nakshatra'17", 'HUG 5.0'],
+    datasets: [{ label: 'Surplus', data: [115695, 15235, 5321],
+      backgroundColor: [TEAL, '#2a78d6', PURPLE], borderRadius: 4, barPercentage: 0.55 }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ' ₹' + c.raw.toLocaleString('en-IN') } } },
+    scales: {
+      x: { grid: { color: GRID }, ticks: { color: MUTED, font: { size: 11 },
+        callback: v => '₹' + (v >= 100000 ? (v/100000).toFixed(1) + 'L' : (v/1000).toFixed(0) + 'K') } },
+      y: { grid: { display: false }, ticks: { color: INK, font: { size: 12 } } }
+    }
+  }
+});
+
+/* Event net waterfall-style bar */
+const evtLabels = ['Off Season-1','Installation','Orientation','Zoo-Ming','BOLS','Serve Dead 1','Beyond Baichara','Share Fare',"Nakshatra'17",'MudaliarKuppam','Serve Dead 2','Bowl&Bond','Lereve P1','HUG 5.0','MasterChef','Lephare','Lereve P2','Spooktacular','Lereve P3',"Children's Day",'Happy Haul','Fambattur Ganna','One Wish','Magic Moments','Vidiyal','Icon RYLA','Blast','Dental Camp','With Love','Gift Exchange'];
+const evtNet   = [-315,-23353,-1754,0,-530,0,-1020,-500,15235,-10000,0,0,-1000,5321,-2550,-260,-609,-19306,12500,-2108,0,-2000,-1345,-3784,115695,-2899,-12073,-875,-7000,-3000];
+const evtColors = evtNet.map(v => v > 0 ? TEAL : v < 0 ? RED : GOLD);
+new Chart(document.getElementById('eventNet'), {
+  type: 'bar',
+  data: { labels: evtLabels, datasets: [{ label: 'Net', data: evtNet, backgroundColor: evtColors, borderRadius: 3, barPercentage: 0.7 }] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ' ₹' + c.raw.toLocaleString('en-IN') } } },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: MUTED, font: { size: 9 }, maxRotation: 55, autoSkip: false } },
+      y: { grid: { color: GRID }, ticks: { color: MUTED, font: { size: 11 },
+        callback: v => '₹' + (Math.abs(v) >= 1000 ? (v/1000).toFixed(0) + 'K' : v) } }
+    }
+  }
+});
+</script>
+</body>
+</html>
