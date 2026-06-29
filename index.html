@@ -6,7 +6,7 @@
 <title>Treasury Report 2025–26 · Rotaract Club of Ambattur</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,7 +31,7 @@
     --border:      #DDE3EA;
     --serif:       'Playfair Display', Georgia, serif;
     --sans:        'DM Sans', system-ui, sans-serif;
-    --mono:        'JetBrains Mono', monospace;
+    --mono:        'IBM Plex Mono', 'Courier New', monospace;
     --radius:      12px;
   }
 
@@ -113,7 +113,14 @@
   }
   .kpi-cell + .kpi-cell { border-left: 1px solid rgba(255,255,255,0.07); }
   .kpi-label { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 7px; }
-  .kpi-value { font-family: var(--serif); font-size: 1.55rem; font-weight: 400; color: #FEFDF9; }
+  .kpi-value {
+    font-family: var(--mono);
+    font-size: 1.4rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+    color: #FEFDF9;
+  }
   .kpi-value.pos { color: var(--amber); }
   .kpi-value.neg { color: #f4788a; }
 
@@ -236,7 +243,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.09em;
-    padding: 10px 12px;
+    padding: 11px 14px;
     text-align: left;
     white-space: nowrap;
   }
@@ -246,24 +253,60 @@
   tbody tr:last-child { border-bottom: none; }
   tbody tr:hover { background: #F4F7FA; }
   tbody td {
-    padding: 9px 12px;
+    padding: 10px 14px;
     color: var(--ink-2);
     vertical-align: middle;
+    font-size: 13.5px;
   }
-  tbody td.num { text-align: right; font-family: var(--mono); font-size: 12px; }
-  tbody td.pos { color: #0A7A6E; font-weight: 600; }
-  tbody td.neg { color: var(--rose); }
-  tbody td.zero { color: var(--muted); }
+  tbody td.num {
+    text-align: right;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+  tbody td.pos {
+    color: #0A7A6E;
+    font-weight: 600;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+  tbody td.neg {
+    color: var(--rose);
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+  tbody td.zero {
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
   tbody td.date-col { color: var(--muted); font-size: 12px; white-space: nowrap; }
   tfoot td {
-    padding: 10px 12px;
+    padding: 11px 14px;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 13.5px;
     background: #EEF2F7;
     border-top: 2px solid #C5D0DC;
     color: var(--navy);
   }
-  tfoot td.num { text-align: right; font-family: var(--mono); }
+  tfoot td.num {
+    text-align: right;
+    font-family: var(--mono);
+    font-size: 13.5px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+  }
   tfoot td.pos { color: #0A7A6E; }
   tfoot td.neg { color: var(--rose); }
 
@@ -301,8 +344,15 @@
   }
   .fund-card.highlight .fund-row { color: rgba(255,255,255,0.75); border-color: rgba(255,255,255,0.07); }
   .fund-row:last-child { border-bottom: none; }
-  .fund-row .amt { font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--ink); }
-  .fund-card.highlight .amt { color: var(--amber); font-size: 22px; }
+  .fund-row .amt {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+  }
+  .fund-card.highlight .amt { color: var(--amber); font-size: 20px; font-weight: 600; }
   .fund-total-label { font-weight: 600; font-size: 13px; color: rgba(255,255,255,0.9); }
 
   /* ── CLOSING ─────────────────────────────────────────────────────── */
@@ -327,7 +377,13 @@
     color: var(--white);
     padding: 16px;
   }
-  .closing-row .c-val { font-family: var(--mono); font-size: 13px; }
+  .closing-row .c-val {
+    font-family: var(--mono);
+    font-size: 13.5px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+  }
   .closing-row:last-child .c-val { font-size: 20px; color: var(--amber); }
 
   /* ── NOTE ────────────────────────────────────────────────────────── */
@@ -344,16 +400,7 @@
   .note-box strong { color: var(--amber-deep); }
 
   /* ── BADGE ───────────────────────────────────────────────────────── */
-  .badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 600;
-  }
-  .badge.pos { background: var(--sage-pale); color: #0A7A6E; }
-  .badge.neg { background: var(--rose-pale); color: var(--rose); }
-  .badge.zero { background: var(--amber-pale); color: var(--amber-deep); }
+
 
   /* ── FOOTER ──────────────────────────────────────────────────────── */
   footer {
@@ -386,7 +433,7 @@
 
 <!-- ── HERO ───────────────────────────────────────────────────────────── -->
 <header class="hero">
-  <p class="hero-eyebrow">Rotaract Club of Ambattur · RID 3232</p>
+  <p class="hero-eyebrow">Rotaract Club of Ambattur · RID 3234</p>
   <h1>Full-Year Treasury Report<br><em>2025 – 2026</em></h1>
   <p class="hero-sub">July 2025 – June 2026 &nbsp;·&nbsp; Compiled by the Club Treasury</p>
   <div class="hero-kpi">
@@ -487,40 +534,40 @@
     <div id="club-all" class="tab-panel active">
       <div class="tbl-wrap">
         <table>
-          <thead><tr><th>#</th><th>Event name</th><th>Date</th><th class="num">Income (₹)</th><th class="num">Expense (₹)</th><th class="num">Net (₹)</th><th>Status</th></tr></thead>
+          <thead><tr><th>#</th><th>Event name</th><th>Date</th><th class="num">Income (₹)</th><th class="num">Expense (₹)</th><th class="num">Net (₹)</th></tr></thead>
           <tbody>
-            <tr><td>1</td><td>Off Season-1</td><td class="date-col">25/05/2025</td><td class="num">—</td><td class="num">315</td><td class="num neg">−315</td><td><span class="badge neg">Deficit</span></td></tr>
-            <tr><td>2</td><td>Installation (Dawn &amp; Ambattur Vagayara)</td><td class="date-col">06/07/2025</td><td class="num">1,73,837</td><td class="num">1,97,190</td><td class="num neg">−23,353</td><td><span class="badge neg">Deficit</span></td></tr>
-            <tr><td>3</td><td>Orientation – Adipadai</td><td class="date-col">13/07/2025</td><td class="num">—</td><td class="num">1,754</td><td class="num neg">−1,754</td><td><span class="badge neg">Deficit</span></td></tr>
-            <tr><td>4</td><td>Zoo-Ming with Fambattur</td><td class="date-col">19/07/2025</td><td class="num">6,200</td><td class="num">6,200</td><td class="num zero">0</td><td><span class="badge zero">Break-even</span></td></tr>
-            <tr><td>5</td><td>BOLS – Ini Oru Vidhi Seivom</td><td class="date-col">25/07/2025</td><td class="num">3,800</td><td class="num">4,330</td><td class="num neg">−530</td><td><span class="badge neg">Deficit</span></td></tr>
-            <tr><td>6</td><td>Serve the Dead – Phase 1</td><td class="date-col">02/08/2025</td><td class="num">500</td><td class="num">500</td><td class="num zero">0</td><td><span class="badge zero">Break-even</span></td></tr>
-            <tr><td>7</td><td>Beyond Baichara</td><td class="date-col">09/08/2025</td><td class="num">—</td><td class="num">1,020</td><td class="num neg">−1,020</td><td><span class="badge neg">Deficit</span></td></tr>
-            <tr><td>8</td><td>Share Fare</td><td class="date-col">30/08/2025</td><td class="num">—</td><td class="num">500</td><td class="num neg">−500</td><td><span class="badge neg">Deficit</span></td></tr>
-            <tr><td>9</td><td>Nakshatra'17</td><td class="date-col">07/09/2025</td><td class="num">2,96,700</td><td class="num">2,81,465</td><td class="num pos">+15,235</td><td><span class="badge pos">Surplus</span></td></tr>
-            <tr><td>10</td><td>MudaliarKuppam Porom</td><td class="date-col">20/09/2025</td><td class="num">15,120</td><td class="num">25,120</td><td class="num neg">−10,000</td><td><span class="badge neg">Deficit</span></td></tr>
-            <tr><td>11</td><td>Serve the Dead – Phase 2</td><td class="date-col">27/09/2025</td><td class="num">500</td><td class="num">500</td><td class="num zero">0</td><td><span class="badge zero">Break-even</span></td></tr>
-            <tr><td>12</td><td>Bowl and Bond</td><td class="date-col">28/09/2025</td><td class="num">1,100</td><td class="num">1,100</td><td class="num zero">0</td><td><span class="badge zero">Break-even</span></td></tr>
-            <tr><td>13</td><td>Lereve – Phase 1</td><td class="date-col">01/10/2025</td><td class="num">—</td><td class="num">1,000</td><td class="num neg">−1,000</td><td><span class="badge neg">Deficit</span></td></tr>
-            <tr><td>14</td><td>HUG 5.0</td><td class="date-col">11–12/10/2025</td><td class="num">2,64,400</td><td class="num">2,59,079</td><td class="num pos">+5,321</td><td><span class="badge pos">Surplus</span></td></tr>
-            <tr><td>15</td><td>Master Chef Mini</td><td class="date-col">18/10/2025</td><td class="num">1,500</td><td class="num">4,050</td><td class="num neg">−2,550</td><td><span class="badge neg">Deficit</span></td></tr>
-            <tr><td>16</td><td>Lephare</td><td class="date-col">25/10/2025</td><td class="num">—</td><td class="num">260</td><td class="num neg">−260</td><td><span class="badge neg">Deficit</span></td></tr>
-            <tr><td>17</td><td>Lereve – Phase 2</td><td class="date-col">01/11/2025</td><td class="num">—</td><td class="num">609</td><td class="num neg">−609</td><td><span class="badge neg">Deficit</span></td></tr>
-            <tr><td>18</td><td>Spooktacular Night</td><td class="date-col">01/11/2025</td><td class="num">37,613</td><td class="num">56,919</td><td class="num neg">−19,306</td><td><span class="badge neg">Deficit</span></td></tr>
-            <tr><td>19</td><td>Lereve – Phase 3</td><td class="date-col">08/11/2025</td><td class="num">12,500</td><td class="num">—</td><td class="num pos">+12,500</td><td><span class="badge pos">Surplus</span></td></tr>
-            <tr><td>20</td><td>Children's Day – Melody of Childhood</td><td class="date-col">15/11/2025</td><td class="num">—</td><td class="num">2,108</td><td class="num neg">−2,108</td><td><span class="badge neg">Deficit</span></td></tr>
-            <tr><td>21</td><td>Happy Haul – Donation Drive</td><td class="date-col">18/11/2025</td><td class="num">8,698</td><td class="num">8,698</td><td class="num zero">0</td><td><span class="badge zero">Break-even</span></td></tr>
-            <tr><td>22</td><td>Fambattur Ganna</td><td class="date-col">06/12/2025</td><td class="num">—</td><td class="num">2,000</td><td class="num neg">−2,000</td><td><span class="badge neg">Deficit</span></td></tr>
-            <tr><td>23</td><td>One Wish</td><td class="date-col">31/12/2025</td><td class="num">—</td><td class="num">1,345</td><td class="num neg">−1,345</td><td><span class="badge neg">Deficit</span></td></tr>
-            <tr><td>24</td><td>Magic Moments</td><td class="date-col">10/01/2026</td><td class="num">1,484</td><td class="num">5,268</td><td class="num neg">−3,784</td><td><span class="badge neg">Deficit</span></td></tr>
-            <tr><td>25</td><td>Vidiyal</td><td class="date-col">14/02/2026</td><td class="num">9,44,000</td><td class="num">8,28,305</td><td class="num pos">+1,15,695</td><td><span class="badge pos">Surplus</span></td></tr>
-            <tr><td>26</td><td>Icon – Interact RYLA</td><td class="date-col">28/02/2026</td><td class="num">28,664</td><td class="num">31,563</td><td class="num neg">−2,899</td><td><span class="badge neg">Deficit</span></td></tr>
-            <tr><td>27</td><td>Blast</td><td class="date-col">01/03/2026</td><td class="num">—</td><td class="num">12,073</td><td class="num neg">−12,073</td><td><span class="badge neg">Deficit</span></td></tr>
-            <tr><td>28</td><td>Inclusion – Dental Camp</td><td class="date-col">10/03/2026</td><td class="num">—</td><td class="num">875</td><td class="num neg">−875</td><td><span class="badge neg">Deficit</span></td></tr>
-            <tr><td>29</td><td>With Love</td><td class="date-col">29/03/2026</td><td class="num">—</td><td class="num">7,000</td><td class="num neg">−7,000</td><td><span class="badge neg">Deficit</span></td></tr>
-            <tr><td>30</td><td>Gift Exchange – ISD</td><td class="date-col">—</td><td class="num">—</td><td class="num">3,000</td><td class="num neg">−3,000</td><td><span class="badge neg">Deficit</span></td></tr>
+            <tr><td>1</td><td>Off Season-1</td><td class="date-col">25/05/2025</td><td class="num">—</td><td class="num">315</td><td class="num neg">−315</td></tr>
+            <tr><td>2</td><td>Installation (Dawn &amp; Ambattur Vagayara)</td><td class="date-col">06/07/2025</td><td class="num">1,73,837</td><td class="num">1,97,190</td><td class="num neg">−23,353</td></tr>
+            <tr><td>3</td><td>Orientation – Adipadai</td><td class="date-col">13/07/2025</td><td class="num">—</td><td class="num">1,754</td><td class="num neg">−1,754</td></tr>
+            <tr><td>4</td><td>Zoo-Ming with Fambattur</td><td class="date-col">19/07/2025</td><td class="num">6,200</td><td class="num">6,200</td><td class="num zero">0</td></tr>
+            <tr><td>5</td><td>BOLS – Ini Oru Vidhi Seivom</td><td class="date-col">25/07/2025</td><td class="num">3,800</td><td class="num">4,330</td><td class="num neg">−530</td></tr>
+            <tr><td>6</td><td>Serve the Dead – Phase 1</td><td class="date-col">02/08/2025</td><td class="num">500</td><td class="num">500</td><td class="num zero">0</td></tr>
+            <tr><td>7</td><td>Beyond Baichara</td><td class="date-col">09/08/2025</td><td class="num">—</td><td class="num">1,020</td><td class="num neg">−1,020</td></tr>
+            <tr><td>8</td><td>Share Fare</td><td class="date-col">30/08/2025</td><td class="num">—</td><td class="num">500</td><td class="num neg">−500</td></tr>
+            <tr><td>9</td><td>Nakshatra'17</td><td class="date-col">07/09/2025</td><td class="num">2,96,700</td><td class="num">2,81,465</td><td class="num pos">+15,235</td></tr>
+            <tr><td>10</td><td>MudaliarKuppam Porom</td><td class="date-col">20/09/2025</td><td class="num">15,120</td><td class="num">25,120</td><td class="num neg">−10,000</td></tr>
+            <tr><td>11</td><td>Serve the Dead – Phase 2</td><td class="date-col">27/09/2025</td><td class="num">500</td><td class="num">500</td><td class="num zero">0</td></tr>
+            <tr><td>12</td><td>Bowl and Bond</td><td class="date-col">28/09/2025</td><td class="num">1,100</td><td class="num">1,100</td><td class="num zero">0</td></tr>
+            <tr><td>13</td><td>Lereve – Phase 1</td><td class="date-col">01/10/2025</td><td class="num">—</td><td class="num">1,000</td><td class="num neg">−1,000</td></tr>
+            <tr><td>14</td><td>HUG 5.0</td><td class="date-col">11–12/10/2025</td><td class="num">2,64,400</td><td class="num">2,59,079</td><td class="num pos">+5,321</td></tr>
+            <tr><td>15</td><td>Master Chef Mini</td><td class="date-col">18/10/2025</td><td class="num">1,500</td><td class="num">4,050</td><td class="num neg">−2,550</td></tr>
+            <tr><td>16</td><td>Lephare</td><td class="date-col">25/10/2025</td><td class="num">—</td><td class="num">260</td><td class="num neg">−260</td></tr>
+            <tr><td>17</td><td>Lereve – Phase 2</td><td class="date-col">01/11/2025</td><td class="num">—</td><td class="num">609</td><td class="num neg">−609</td></tr>
+            <tr><td>18</td><td>Spooktacular Night</td><td class="date-col">01/11/2025</td><td class="num">37,613</td><td class="num">56,919</td><td class="num neg">−19,306</td></tr>
+            <tr><td>19</td><td>Lereve – Phase 3</td><td class="date-col">08/11/2025</td><td class="num">12,500</td><td class="num">—</td><td class="num pos">+12,500</td></tr>
+            <tr><td>20</td><td>Children's Day – Melody of Childhood</td><td class="date-col">15/11/2025</td><td class="num">—</td><td class="num">2,108</td><td class="num neg">−2,108</td></tr>
+            <tr><td>21</td><td>Happy Haul – Donation Drive</td><td class="date-col">18/11/2025</td><td class="num">8,698</td><td class="num">8,698</td><td class="num zero">0</td></tr>
+            <tr><td>22</td><td>Fambattur Ganna</td><td class="date-col">06/12/2025</td><td class="num">—</td><td class="num">2,000</td><td class="num neg">−2,000</td></tr>
+            <tr><td>23</td><td>One Wish</td><td class="date-col">31/12/2025</td><td class="num">—</td><td class="num">1,345</td><td class="num neg">−1,345</td></tr>
+            <tr><td>24</td><td>Magic Moments</td><td class="date-col">10/01/2026</td><td class="num">1,484</td><td class="num">5,268</td><td class="num neg">−3,784</td></tr>
+            <tr><td>25</td><td>Vidiyal</td><td class="date-col">14/02/2026</td><td class="num">9,44,000</td><td class="num">8,28,305</td><td class="num pos">+1,15,695</td></tr>
+            <tr><td>26</td><td>Icon – Interact RYLA</td><td class="date-col">28/02/2026</td><td class="num">28,664</td><td class="num">31,563</td><td class="num neg">−2,899</td></tr>
+            <tr><td>27</td><td>Blast</td><td class="date-col">01/03/2026</td><td class="num">—</td><td class="num">12,073</td><td class="num neg">−12,073</td></tr>
+            <tr><td>28</td><td>Inclusion – Dental Camp</td><td class="date-col">10/03/2026</td><td class="num">—</td><td class="num">875</td><td class="num neg">−875</td></tr>
+            <tr><td>29</td><td>With Love</td><td class="date-col">29/03/2026</td><td class="num">—</td><td class="num">7,000</td><td class="num neg">−7,000</td></tr>
+            <tr><td>30</td><td>Gift Exchange – ISD</td><td class="date-col">—</td><td class="num">—</td><td class="num">3,000</td><td class="num neg">−3,000</td></tr>
           </tbody>
-          <tfoot><tr><td colspan="3">Total</td><td class="num">17,96,616</td><td class="num">17,44,146</td><td class="num pos">+52,470</td><td></td></tr></tfoot>
+          <tfoot><tr><td colspan="3">Total</td><td class="num">17,96,616</td><td class="num">17,44,146</td><td class="num pos">+52,470</td></tr></tfoot>
         </table>
       </div>
     </div>
@@ -643,7 +690,7 @@
 </main>
 
 <footer>
-  <strong>Rotaract Club of Ambattur</strong> &nbsp;·&nbsp; RID 3232 &nbsp;·&nbsp; Club Year 2025–2026<br />
+  <strong>Rotaract Club of Ambattur</strong> &nbsp;·&nbsp; RID 3234 &nbsp;·&nbsp; Club Year 2025–2026<br />
   <span style="margin-top:6px; display:inline-block">Treasury Report — For internal circulation</span>
 </footer>
 
